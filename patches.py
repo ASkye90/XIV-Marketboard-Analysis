@@ -4,5 +4,19 @@ PATCH_LIST_URL = "https://raw.githubusercontent.com/xivapi/ffxiv-datamining-patc
 patch_list_df = pd.read_json(PATCH_LIST_URL)
 patch_list_df.set_index("ID",inplace=True)
 
-def get_version_by_patch_id(id):
-    return patch_list_df["Version"].get(id)
+class Patch:
+    def __init__(self,_id):
+        self._id = _id
+        self._patch = patch_list_df.loc[self._id]
+
+    @property
+    def version(self):
+        return self._patch["Version"]
+
+    @property
+    def release_date(self):
+        return patch_list_df["ReleaseDate"].get(self._id)
+
+    @property
+    def name(self):
+        return patch_list_df
